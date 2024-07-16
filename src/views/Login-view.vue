@@ -70,6 +70,7 @@ export default {
 
           
         } catch (error) {
+          alert('Login fallido: ' + (error.response?.data?.message || error.message))
           this.setNotification('Login fallido: ' + (error.response?.data?.message || error.message));
         }
       } else {
