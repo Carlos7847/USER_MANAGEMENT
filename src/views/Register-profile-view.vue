@@ -42,7 +42,7 @@
 
 <script>
 import apiClient from '@/helpers/axios';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'RegisterProfile',
@@ -59,14 +59,13 @@ export default {
       apellidoError: '',
       usuarioError: '',
       emailError: '',
-      passwordError: ''
+      passwordError: '',
+      notification: ''
     };
   },
-  computed: {
-    ...mapState(['user', 'notification'])
-  },
+
   methods: {
-    ...mapActions(['updateUser', 'setNotification', 'saveUserDataOnLocalStorage']),
+    ...mapActions(['saveUserDataOnLocalStorage']),
     validateEmail() {
       const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       if (!re.test(this.email)) {
@@ -128,11 +127,12 @@ export default {
           this.clearInputs();
           this.$router.push('/login')
         } catch (error) {
-          this.setNotification(error.response.data.message || "Error al crear usuario");
+          this.notification = error.response.data.message || "Error al crear usuario";
+          alert(error.response.data.message || "Error al crear usuario");
           console.error(error.response.data);
         }
       } else {
-        this.setNotification('Por favor, corrija los errores antes de enviar');
+        this.notification = 'Por favor, corrija los errores antes de enviar';
       }
     },
     clearInputs() {
@@ -141,12 +141,11 @@ export default {
       this.usuario = '',
       this.email = '',
       this.password = '',
-      this.setNotification('')
+      this.notification = ''
     }
   },
 
   mounted() { 
-    this.setNotification('')
   }
 };
 </script>

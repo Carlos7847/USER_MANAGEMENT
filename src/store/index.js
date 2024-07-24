@@ -2,23 +2,9 @@ import { createStore } from 'vuex';
 
 const store = createStore({
   state: {
-    user: {
-      nombre: '',
-      apellido: '',
-      usuario: '',
-      email: '',
-      password: ''
-    },
-    notification: '',
     token: localStorage.getItem('token') || ''
   },
   mutations: {
-    setUser(state, userData) {
-      state.user = { ...userData };
-    },
-    setNotification(state, message) {
-      state.notification = message;
-    },
     setToken(state, token) {
       state.token = token;
       localStorage.setItem('token', token);
@@ -27,20 +13,21 @@ const store = createStore({
       state.token = '';
       localStorage.removeItem('token');
     },
+    // clearUserData() {
+    //   localStorage.removeItem('nombre');
+    //   localStorage.removeItem('apellido');
+    //   localStorage.removeItem('email');
+    //   localStorage.removeItem('usuario');
+    //   localStorage.removeItem('id');
+    // },
   },
   actions: {
-    updateUser({ commit }, userData) {
-      commit('setUser', userData);
-      // commit('setNotification', 'Información actualizada correctamente');
-    },
-    setNotification({ commit }, message) {
-      commit('setNotification', message);
-    },
     login({ commit }, token) {
       commit('setToken', token);
     },
     logout({ commit }) {
       commit('clearToken');
+      // commit('clearUserData');
     },
     // eslint-disable-next-line no-unused-vars
     saveUserDataOnLocalStorage({ commit }, userData) {
@@ -52,8 +39,7 @@ const store = createStore({
     }
   },
   getters: {
-    user: (state) => state.user,
-    notification: (state) => state.notification,
+
     isAuthenticated: (state) => {
       let tokenValue
 

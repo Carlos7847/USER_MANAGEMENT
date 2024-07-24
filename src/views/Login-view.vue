@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import apiClient from '@/helpers/axios';
 import { authState } from '@/auth';
 
@@ -38,17 +38,13 @@ export default {
       email: '',
       password: '',
       emailError: '',
-      passwordError: ''
+      passwordError: '',
+      notification: ''
     };
   },
-  computed: {
-    ...mapState(['notification']),
-    notification() {
-      return authState.notification;
-    }
-  },
+
   methods: {
-    ...mapActions(['updateUser', 'setNotification', 'login', 'saveUserDataOnLocalStorage']),
+    ...mapActions(['updateUser', 'login', 'saveUserDataOnLocalStorage']),
     async login() {
       const isEmailValid = this.validateEmail();
       const isPasswordValid = this.validatePassword();
@@ -70,11 +66,11 @@ export default {
 
           
         } catch (error) {
+          this.notification = 'Login fallido: ' + (error.response?.data?.message || error.message);
           alert('Login fallido: ' + (error.response?.data?.message || error.message))
-          this.setNotification('Login fallido: ' + (error.response?.data?.message || error.message));
         }
       } else {
-        this.setNotification('Por favor, corrija los errores antes de enviar');
+        this.notification = 'Por favor, corrija los errores antes de enviar';
       }
     },
 

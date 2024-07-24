@@ -29,6 +29,8 @@
         <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
         <button type="submit" class="btn">Actualizar</button>
       </form>
+      <br>
+      <button class="btn-home" @click="this.$router.push('/')">Ir al home</button>
       <p v-if="notification" class="notification">{{ notification }}</p>
     </div>
   </div>
@@ -36,7 +38,7 @@
 
 <script>
 import apiClient from '@/helpers/axios';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -52,12 +54,11 @@ export default {
       apellidoError: '',
       usuarioError: '',
       emailError: '',
-      passwordError: ''
+      passwordError: '',
+      notification: ''
     };
   },
-  computed: {
-    ...mapState(['user', 'notification'])
-  },
+
   methods: {
     ...mapActions(['updateUser', 'setNotification', 'saveUserDataOnLocalStorage']),
     validateEmail() {
@@ -122,7 +123,8 @@ export default {
           this.localUser.password = ''
           alert('Se actualizaron los datos correctamente. Felicidades ' + data.nombre)
         } catch (error) {
-          this.setNotification(error.response.data.message || "Error al actualizar usuario");
+          alert(error.response.data.message || "Error al actualizar usuario");
+          this.notification = (error.response.data.message || "Error al actualizar usuario");
           console.error(error.response.data);
         }
       } else {
@@ -246,5 +248,20 @@ export default {
 .notification {
   color: red;
   margin-top: 10px;
+}
+
+.btn-home {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #ff6600;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-home:hover {
+  background: #b36b00;
 }
 </style>
